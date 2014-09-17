@@ -1,0 +1,100 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.0.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+	<h1>hi world</h1>
+  </div>
+
+  <script type="text/javascript">
+
+	function GetUrlValue(VarSearch){
+		var SearchString = window.location.search.substring(1);
+	    var VariableArray = SearchString.split('&');
+	    for(var i = 0; i < VariableArray.length; i++){
+	        var KeyValuePair = VariableArray[i].split('=');
+	        if(KeyValuePair[0] == VarSearch){
+	            return KeyValuePair[1];
+	        }
+	    }
+	}
+
+	var myTitle = GetUrlValue("myTitle");
+	var myUrl = GetUrlValue("myUrl");
+	
+	alert(myTitle);
+	alert(myUrl);
+	
+    Parse.initialize("Yqt0rTyLG1zwMbIOQ5B3FtoApz5JR0Ts5nRgnA3P", "rFVer0LwTmwGXPdwDKw9FcC8kMzPfS2ttMlPjQpq");
+
+	var currentUser = Parse.User.current();
+	if (currentUser) {
+		
+		
+		if (myTitle && myUrl){ 
+
+		
+		    //alert("you ARE re logged in!");
+			var VideoObject = Parse.Object.extend("VideoObject");
+			var videoObject = new VideoObject();
+
+			//create the video
+			var myVideo = new VideoObject();
+			myVideo.set("title", myTitle);
+			myVideo.set("url", myUrl);
+			myVideo.set("parent", currentUser);
+			myVideo.save();
+
+			document.getElementById("main").innerHTML = "saved video";
+			alert("saved video");
+		} else {
+			document.getElementById("main").innerHTML = "didnt get the right variables";
+			alert("didnt get the right variables");
+		}
+	} else {
+
+	    alert("you are NOT logged in.");
+		//sign this person up:
+		/*
+		var user = new Parse.User();
+		user.set("username", "matt");
+		user.set("password", "mfhmfh");
+		user.set("email", "matthartman@gmail.com");
+
+		user.signUp(null, {
+		  success: function(user) {
+		    // Hooray! Let them use the app now.
+		  },
+		  error: function(user, error) {
+		    // Show the error message somewhere and let the user try again.
+		    alert("Error: " + error.code + " " + error.message);
+		  }
+		});
+		*/
+		/*
+		Parse.User.logIn("matt", "mfhmfh", {
+		  success: function(user) {
+		    // Do stuff after successful login.
+		  },
+		  error: function(user, error) {
+		    // The login failed. Check error to see why.
+		  }
+		});
+		*/
+	}
+
+  </script>
+</body>
+
+</html>
